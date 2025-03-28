@@ -59,7 +59,7 @@ jobs:
         with:
           version: 8
       - name: Install Workerd
-        run: pnpm add @cloudflare/workerd-linux-64
+        run: pnpm add -w @cloudflare/workerd-linux-64
 
       - name: Install Wrangler
         run: pnpm install -g wrangler
