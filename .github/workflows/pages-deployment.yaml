@@ -1,4 +1,8 @@
-on: [push]
+on:
+  push:
+    branches: 
+      - main
+      - preview
 jobs:
   deploy_worker:
     name: Deploy Cloudflare Worker
@@ -10,7 +14,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: "/tech-check-worker"
+          workingDirectory: "apps/tech-check-worker"
 
   deploy_flutter_app:
     runs-on: ubuntu-latest

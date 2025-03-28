@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "frontend:dev": "cd apps/tech-check-flutter && flutter run",
+    "backend:dev": "cd apps/tech-check-worker && wrangler dev"
   },
   "keywords": [],
   "author": "",
