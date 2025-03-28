@@ -55,11 +55,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      # - uses: pnpm/action-setup@v2
+      #   with:
+      #     version: 8
       - name: Install Workerd
-        run: pnpm add -w @cloudflare/workerd-linux-64
+        run: yarn add @cloudflare/workerd-linux-64
 
       - name: Install Wrangler
         run: pnpm install -g wrangler
