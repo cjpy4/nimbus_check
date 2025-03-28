@@ -70,7 +70,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy 'apps/tech-check-flutter/build/web' --project-name='tech-check'
+          command: pages deploy apps/tech-check-flutter/build/web --project-name=tech-check
           # projectName: 'tech-check'
           # directory: 'apps/tech-check-flutter/build/web'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
