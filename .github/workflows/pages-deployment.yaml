@@ -54,7 +54,16 @@ jobs:
           channel: stable
       - name: Install dependencies
         run: flutter pub get
-      # - run: flutter test
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Workerd
+        run: pnpm add @cloudflare/workerd-linux-64
+
+      - name: Install Wrangler
+        run: pnpm install -g wrangler
+
       - name: Build Flutter web app
         run: flutter build web
       - name: Publish
