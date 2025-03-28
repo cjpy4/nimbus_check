@@ -25,7 +25,9 @@ jobs:
           pnpm install
 
       - name: Install Wrangler
-        run: pnpm install -g wrangler
+        run: |
+          cd apps/tech-check-worker
+          pnpm install -g wrangler
 
       - name: Deploy Worker
         run: |
@@ -46,14 +48,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       # Run your project's build step
-      - name: Change to Flutter app directory
-        run: cd apps/tech-check-flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          cd apps/tech-check-flutter
+          flutter pub get
       # - run: flutter test
       - name: Build Flutter web app
         run: flutter build web
