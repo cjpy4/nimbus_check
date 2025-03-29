@@ -3,7 +3,6 @@
   "name": "tech-check-worker",
   "main": "src/index.ts",
   "compatibility_date": "2025-03-28",
-  "nodejs_compat": false,
   "vars": {
     "SICKW_API_KEY": "sickw-key"
   },
