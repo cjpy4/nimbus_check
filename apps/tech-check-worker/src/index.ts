@@ -30,6 +30,7 @@ app.get('/stdcheck', async (c) => {
     const data = await response.json()
     return c.json(data)
   } catch (error) {
+    console.log(error)
     return c.json({ error: 'Failed to fetch data' }, 500)
   }
 })
