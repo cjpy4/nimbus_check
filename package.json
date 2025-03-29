@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "frontend:dev": "cd apps/tech-check-flutter && flutter run",
-    "backend:dev": "cd apps/tech-check-worker && wrangler dev"
+    "backend:dev": "cd apps/tech-check-worker && bun run dev",
+    "backend:deploy": "cd apps/tech-check-worker && bun run deploy"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.7.0",
+  "workspaces": [
+    "apps/*"
+  ],
   "devDependencies": {
     "wrangler": "^4.5.1"
   },

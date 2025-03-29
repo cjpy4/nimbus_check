@@ -14,22 +14,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 22
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Install Wrangler
-        run: pnpm install -g wrangler
+        run: bun install
 
       - name: Deploy Worker
-        run: wrangler deploy
+        run: bun run deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -55,13 +49,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-           version: 8
+          bun-version: latest
       - name: Install dependencies
-        run: pnpm install
-      # - name: Install Workerd
-      #   run: pnpm add @cloudflare/workerd-linux-64
+        run: bun install
 
       - name: Build Flutter web app
         run: flutter build web
@@ -71,6 +64,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy apps/tech-check-flutter/build/web --project-name=tech-check
-          # projectName: 'tech-check'
-          # directory: 'apps/tech-check-flutter/build/web'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

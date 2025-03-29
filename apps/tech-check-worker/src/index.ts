@@ -1,6 +1,20 @@
 import { env } from 'cloudflare:workers'
 import { Hono } from 'hono'
 
+// Access environment variables using Bun approach, falling back to Cloudflare's env
+const getEnv = (key: string) => {
+  if (process.env[key]) {
+    return process.env[key]
+  }
+  
+  // Access through Cloudflare Workers env when running in that environment
+  if (typeof env !== 'undefined' && env[key]) {
+    return env[key]
+  }
+  
+  return undefined
+}
+
 const app = new Hono()
 
 app.get('/', (c) => {
@@ -12,10 +26,10 @@ app.get('/stdcheck', async (c) => {
     // Let's log the environment for debugging
     console.log('Environment:', {
       environment: c.env ? 'Found' : 'Not Found',
-      hasApiKey: env.SICKW_API_KEY ? 'Yes' : 'No'
+      hasApiKey: getEnv('SICKW_API_KEY') ? 'Yes' : 'No'
     })
     
-    const api_key = env.SICKW_API_KEY
+    const api_key = getEnv('SICKW_API_KEY')
     if (!api_key) {
       return c.json({ 
         error: 'API key not found in environment',

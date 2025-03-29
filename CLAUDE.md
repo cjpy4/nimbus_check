@@ -1,15 +1,15 @@
 # Tech Check Project Guidelines
 
 ## Commands
-### Worker (Node.js/TypeScript)
-- Run worker locally: `npm run dev` or `pnpm backend:dev` (uses wrangler dev server)
-- Deploy worker: `npm run deploy` (production deployment to Cloudflare)
-- Type check: `npx tsc --noEmit` (validate TypeScript without generating files)
-- Install ESLint: `npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev`
-- Run with inspector: `wrangler dev --inspector-port=9229` (for debugging)
+### Worker (Bun/TypeScript)
+- Run worker locally: `bun run dev` or `bun run backend:dev` (uses wrangler dev server)
+- Deploy worker: `bun run deploy` (production deployment to Cloudflare)
+- Type check: `bun run tsc --noEmit` (validate TypeScript without generating files)
+- Install ESLint: `bun install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev`
+- Run with inspector: `bun run --bun wrangler dev --inspector-port=9229` (for debugging)
 
 ### Flutter
-- Run app: `flutter run` or `pnpm frontend:dev` (launches on connected device/emulator)
+- Run app: `flutter run` or `bun run frontend:dev` (launches on connected device/emulator)
 - Test all: `flutter test` (runs all tests in the test directory)
 - Test single file: `flutter test test/widget_test.dart` (runs specific test file)
 - Test single unit: `flutter test --name="Counter increments smoke test"` (runs specific test)
