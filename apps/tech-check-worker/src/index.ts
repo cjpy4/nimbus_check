@@ -36,6 +36,13 @@ app.get('/stdcheck', async (c) => {
       
       console.log('Response status:', response.status)
       
+      // Log response headers
+      const headers = {}
+      response.headers.forEach((value, key) => {
+        headers[key] = value
+      })
+      console.log('Response headers:', headers)
+      
       if (!response.ok) {
         const errorText = await response.text()
         console.error('Response error:', errorText)
@@ -43,12 +50,39 @@ app.get('/stdcheck', async (c) => {
           error: 'API request failed',
           status: response.status,
           statusText: response.statusText,
+          headers: headers,
           details: errorText.substring(0, 500) // Limit response size
         }, response.status)
       }
       
-      const data = await response.json()
-      return c.json(data)
+      // Clone the response so we can read the raw text for debugging
+      const responseClone = response.clone()
+      const rawText = await responseClone.text()
+      console.log('Raw response:', rawText.substring(0, 500))
+      
+      // Check if the response starts with HTML tags
+      if (rawText.trim().startsWith('<')) {
+        return c.json({
+          error: 'HTML response received instead of JSON',
+          htmlContent: rawText.substring(0, 1000),
+          headers: headers
+        }, 500)
+      }
+      
+      try {
+        const data = JSON.parse(rawText)
+        return c.json(data)
+      } catch (parseError) {
+        return c.json({
+          error: 'Failed to parse JSON response',
+          rawContent: rawText.substring(0, 1000),
+          parseError: {
+            name: parseError.name,
+            message: parseError.message
+          },
+          headers: headers
+        }, 500)
+      }
     } catch (fetchError) {
       // Get detailed error information
       const errorDetail = {
