@@ -3,11 +3,11 @@ import { Hono } from 'hono'
 
 const app = new Hono()
 
-app.get('/', (c) => {
+app.get('/wkr', (c) => {
   return c.text('Hello from Tech Check Worker!')
 })
 
-app.get('/stdcheck', async (c) => {
+app.get('/wkr/stdcheck', async (c) => {
   try {
     // Let's log the environment for debugging
     console.log('Environment:', {
@@ -43,6 +43,7 @@ app.get('/stdcheck', async (c) => {
         headers[key] = value
       })
       console.log('Response headers:', headers)
+
       
       if (!response.ok) {
         const errorText = await response.text()
@@ -70,6 +71,7 @@ app.get('/stdcheck', async (c) => {
         }, 500)
       }
       
+// Return JSON response
       try {
         const data = JSON.parse(rawText)
         return c.json(data)
