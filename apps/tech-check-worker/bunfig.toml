@@ -1,7 +1,0 @@
-[install]
-# Use the exact versions specified in package.json
-exact = true
-
-[test]
-# Use the node compatibility layer for testing
-use-node-jsx = true
