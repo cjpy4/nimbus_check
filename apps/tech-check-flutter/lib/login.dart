@@ -9,8 +9,41 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final username = TextEditingController();
+  final email = TextEditingController();
   final password = TextEditingController();
+  var register = false;
+
+  void login(email, password) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  void signUp(email, password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +63,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    'Login',
+                    register == true ? 'Create an Account' : 'Login',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: TextField(
-                      controller: username,
+                      controller: email,
                       style: Theme.of(context).textTheme.bodyLarge,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -61,23 +94,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: username.text,
-                          password: password.text,
-                        );
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          print('No user found for that email.');
-                        } else if (e.code == 'wrong-password') {
-                          print('Wrong password provided for that user.');
-                        }
-                      }
+                    onPressed: () {
+                      register
+                          ? signUp(email, password)
+                          : login(email, password);
                     },
                     child: Text(
-                      'Login',
+                      register ? 'Sign Up' : 'Login',
                       style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        register = !register;
+                      });
+                    },
+                    child: Text(
+                      register
+                          ? 'Already have an account?'
+                          : 'Need a new account?',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationColor:
+                            Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
