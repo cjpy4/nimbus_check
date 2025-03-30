@@ -1,9 +1,9 @@
-# on:
-#   push:
-#     branches: 
-#       - main
-#       - preview
-# jobs:
+on:
+  push:
+    branches: 
+      - main
+      - preview
+jobs:
 #   deploy_worker:
 #     name: Deploy Cloudflare Worker
 #     runs-on: ubuntu-latest
