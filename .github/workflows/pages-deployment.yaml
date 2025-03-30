@@ -30,7 +30,6 @@ jobs:
 
   deploy_flutter_app:
     runs-on: ubuntu-latest
-    needs: deploy_worker
     defaults:
       run:
         working-directory: apps/tech-check-flutter
