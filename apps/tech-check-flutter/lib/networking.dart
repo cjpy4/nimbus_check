@@ -4,7 +4,7 @@ import 'models/result.dart';
 
 const String apiBaseUrl = String.fromEnvironment(
   'API_URL',
-  defaultValue: 'https://checkdevice-x64tbucalq-uc.a.run.app',
+  defaultValue: 'https://tech-check.us/wkr/stdcheck',
 );
 
 Future<List<Result>> getResults(
@@ -20,24 +20,27 @@ Future<List<Result>> getResults(
     print('imei: $imei');
     print('key: ${key.substring(0, 4)}***'); // Only show first 4 chars of key
 
-    var url = Uri.parse(apiBaseUrl).replace(
-      queryParameters: {
-        'format': format,
-        'key': key,
-        'service': service,
-        'imei': imei,
-      },
-    );
+    var url = Uri.parse(apiBaseUrl);
 
-    print('Requesting URL: ${url.toString().replaceAll(key, "***")}');
+    // Create request body from parameters
+    Map<String, String> requestBody = {
+      'format': format,
+      'key': key,
+      'service': service,
+      'imei': imei,
+    };
+
+    print('Requesting URL: ${url.toString()}');
+    print('Request body: ${requestBody.toString().replaceAll(key, "***")}');
 
     final stopwatch = Stopwatch()..start();
-    var response = await http.get(
+    var response = await http.post(
       url,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      body: convert.jsonEncode(requestBody),
     );
     print('Request completed in ${stopwatch.elapsedMilliseconds}ms');
 
