@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Container(
+              constraints: const BoxConstraints(maxWidth: 450),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -62,11 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        final credential = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                              email: username.text,
-                              password: password.text,
-                            );
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: username.text,
+                          password: password.text,
+                        );
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
                           print('No user found for that email.');
