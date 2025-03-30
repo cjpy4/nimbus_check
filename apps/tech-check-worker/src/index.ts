@@ -7,7 +7,7 @@ app.get('/wkr', (c) => {
   return c.text('Hello from Tech Check Worker!')
 })
 
-app.get('/wkr/stdcheck', async (c) => {
+app.post('/wkr/stdcheck', async (c) => {
   try {
     // Let's log the environment for debugging
     console.log('Environment:', {
