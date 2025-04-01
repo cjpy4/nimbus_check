@@ -17,25 +17,33 @@ class _ResponseTableState extends State<ResponseTable> {
 
   @override
   void initState() {
+    print('Initializing ResponseTable with IMEI: ${widget.imei}');
     super.initState();
-    _fetchResults();
+    // Call _fetchResults after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchResults();
+    });
   }
 
   Future<void> _fetchResults() async {
+    print('_fetchResults called');
     setState(() => _isLoading = true);
     try {
+      print('Fetching results for IMEI: ${widget.imei}');
       final results = await getResults(
         'beta',
         'V29-1J2-0JX-CDL-DFT-TUZ-SM6-BHJ',
         'demo',
         widget.imei,
       );
+      print('Got results: $results');
       setState(() {
         _results = results;
         _isLoading = false;
       });
+      print('State updated with ${_results.length} results');
     } catch (e) {
-      print('Error: $e');
+      print('Error in _fetchResults: $e');
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(
         context,

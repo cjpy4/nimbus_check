@@ -39,6 +39,7 @@ class _IMEIFormState extends State<IMEIForm> {
             const SizedBox(width: 16),
             ElevatedButton(
               onPressed: () {
+                print('Button pressed with IMEI: ${_controller.text}');
                 if (_formKey.currentState!.validate()) {
                   widget.onSubmit(_controller.text);
                   _controller.clear();

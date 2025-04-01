@@ -8,3 +8,15 @@ class Result {
     return Result(key: json.key, value: json.value.toString());
   }
 }
+
+class ResultResponse {
+  final List<Result> results;
+  final DateTime timestamp;
+  final String imei;
+
+  ResultResponse({
+    required this.results,
+    required this.timestamp,
+    required this.imei,
+  });
+}

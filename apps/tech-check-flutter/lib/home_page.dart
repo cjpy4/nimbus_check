@@ -1,30 +1,44 @@
 import 'package:flutter/material.dart';
-import 'form.dart';
-import 'response_table.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'widgets/imei_form_widget.dart';
+import 'widgets/results_list_widget.dart';
+import 'widgets/search_history_widget.dart';
+import 'providers/result_providers.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState(); 
-}
-
-class _HomePageState extends State<HomePage> {
-  final List<Widget> _tables = [];
-
-  void _addNewSearch(String imei) {
-    setState(() {
-      _tables.insert(0, ResponseTable(imei: imei, key: UniqueKey()));
-    });
-  }
+class HomePage extends ConsumerWidget {
+  const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: ListView(children: _tables)),
-        IMEIForm(onSubmit: _addNewSearch),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tech Check'),
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          // Search history chips
+          SearchHistoryWidget(
+            onSelect: (imei) {
+              // TODO: Implement selecting from history
+              // This could scroll to the specific result or highlight it
+            },
+          ),
+          
+          // Main content - scrollable list of results
+          const Expanded(
+            child: ResultsListWidget(),
+          ),
+          
+          // IMEI form at the bottom
+          IMEIFormWidget(
+            onSubmit: (imei) {
+              // Trigger the providers with the specific IMEI
+              ref.read(searchHistoryProvider.notifier).addSearch(imei);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
