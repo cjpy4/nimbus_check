@@ -1,65 +1,56 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "resolved": "github:NixOS/nixpkgs/88e992074d86ad50249de12b7fb8dbaadf8dc0c5?lastModified=1743472173&narHash=sha256-xwNv3FYTC5pl4QVZ79gUxqCEvqKzcKdXycpH5UbYscw%3D"
-    },
-    "python@3.10": {
-      "last_modified": "2025-03-21T17:37:26Z",
-      "plugin_version": "0.0.4",
-      "resolved": "github:NixOS/nixpkgs/94c4dbe77c0740ebba36c173672ca15a7926c993#python310",
+    "flutter@latest": {
+      "last_modified": "2025-03-11T17:52:14Z",
+      "resolved": "github:NixOS/nixpkgs/0d534853a55b5d02a4ababa1d71921ce8f0aee4c#flutter",
       "source": "devbox-search",
-      "version": "3.10.16",
+      "version": "3.27.4-sdk-links",
       "systems": {
         "aarch64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/qd1q9w1kbps8wkfblk24qzq040xc0irk-python3-3.10.16",
+              "path": "/nix/store/l6r7y8z5nxgfgfjz3wlk9aw825dclxng-flutter-wrapped-3.27.4-sdk-links",
               "default": true
             }
           ],
-          "store_path": "/nix/store/qd1q9w1kbps8wkfblk24qzq040xc0irk-python3-3.10.16"
+          "store_path": "/nix/store/l6r7y8z5nxgfgfjz3wlk9aw825dclxng-flutter-wrapped-3.27.4-sdk-links"
         },
         "aarch64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/iiz96vys6ziki6aarm5ywll4vgxgkpwn-python3-3.10.16",
+              "path": "/nix/store/mvly79vkcmmb8d2qp1rclay7nm4hfv5b-flutter-wrapped-3.27.4-sdk-links",
               "default": true
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/x6pwgdw1nqyi3qysf93nx2qr0gld2swj-python3-3.10.16-debug"
             }
           ],
-          "store_path": "/nix/store/iiz96vys6ziki6aarm5ywll4vgxgkpwn-python3-3.10.16"
+          "store_path": "/nix/store/mvly79vkcmmb8d2qp1rclay7nm4hfv5b-flutter-wrapped-3.27.4-sdk-links"
         },
         "x86_64-darwin": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/7c38y5l18j63rdr91nncr8jf5czkcj5f-python3-3.10.16",
+              "path": "/nix/store/035xi1mmjxnw1aa1ym32zm42q8jvm39m-flutter-wrapped-3.27.4-sdk-links",
               "default": true
             }
           ],
-          "store_path": "/nix/store/7c38y5l18j63rdr91nncr8jf5czkcj5f-python3-3.10.16"
+          "store_path": "/nix/store/035xi1mmjxnw1aa1ym32zm42q8jvm39m-flutter-wrapped-3.27.4-sdk-links"
         },
         "x86_64-linux": {
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/a8bc49b8gzfwl5m1lvqfcklyyjmrw2z8-python3-3.10.16",
+              "path": "/nix/store/yfa2q3i6phknrb4172fw1nz4wpk82w54-flutter-wrapped-3.27.4-sdk-links",
               "default": true
-            },
-            {
-              "name": "debug",
-              "path": "/nix/store/lgqxzmf12aqcc4zqddf2fki5m0ak42fa-python3-3.10.16-debug"
             }
           ],
-          "store_path": "/nix/store/a8bc49b8gzfwl5m1lvqfcklyyjmrw2z8-python3-3.10.16"
+          "store_path": "/nix/store/yfa2q3i6phknrb4172fw1nz4wpk82w54-flutter-wrapped-3.27.4-sdk-links"
         }
       }
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "resolved": "github:NixOS/nixpkgs/88e992074d86ad50249de12b7fb8dbaadf8dc0c5?lastModified=1743472173&narHash=sha256-xwNv3FYTC5pl4QVZ79gUxqCEvqKzcKdXycpH5UbYscw%3D"
     },
     "ripgrep@latest": {
       "last_modified": "2025-03-11T17:52:14Z",
