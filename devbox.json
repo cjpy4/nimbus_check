@@ -1,11 +1,26 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.0/.schema/devbox.schema.json",
+  "include": [
+    "plugin:nodejs-slim"
+  ],
   "packages": [
     "ripgrep@latest",
-    "flutter@latest"
+    "flutter@latest",
+    "bun@latest",
+    "typescript@latest",
+    "firebase-tools@latest",
+    "dart@latest",
+    "jq@latest",
+    "git@latest",
+    "chromedriver@latest",
+    "eslint@latest",
+    "android-tools@latest",
+    "ruby@latest",
+    "cocoapods@1.16.2"
   ],
   "shell": {
     "init_hook": [
+      "export GEM_HOME=\"$HOME/.gems\" && export PATH=\"$HOME/.gems/bin:$PATH\" && gem install cocoapods",
       "echo 'Welcome to devbox!' > /dev/null"
     ],
     "scripts": {
