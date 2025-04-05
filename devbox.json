@@ -4,6 +4,7 @@
     "plugin:nodejs-slim"
   ],
   "packages": [
+    "devbox@latest",
     "ripgrep@latest",
     "flutter@latest",
     "bun@latest",
