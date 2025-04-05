@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:developer';
 
 class IMEIFormWidget extends StatefulWidget {
   final Function(String) onSubmit;
@@ -73,7 +74,7 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
             child: Card(
               margin: const EdgeInsets.symmetric(
                 horizontal: 24.0,
-                vertical: 96.0,
+                vertical: 24.0,
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -99,10 +100,10 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
                           ),
                         ),
                         validator: _validateIMEI,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(15),
+                          // FilteringTextInputFormatter.digitsOnly,
+                          // LengthLimitingTextInputFormatter(15),
                         ],
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (_) => _submitForm(),
