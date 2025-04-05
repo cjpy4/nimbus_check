@@ -17,11 +17,10 @@
     "eslint@latest",
     "android-tools@latest",
     "ruby@latest",
-    "cocoapods@latest"
+    "rubyPackages.cocoapods@latest"
   ],
   "shell": {
     "init_hook": [
-      "export GEM_HOME=\"$HOME/.gems\" && export PATH=\"$HOME/.gems/bin:$PATH\" && gem install cocoapods",
       "echo 'Welcome to devbox!' > /dev/null"
     ],
     "scripts": {
