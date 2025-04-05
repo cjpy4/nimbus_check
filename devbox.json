@@ -17,7 +17,7 @@
     "eslint@latest",
     "android-tools@latest",
     "ruby@latest",
-    "cocoapods@1.16.2"
+    "cocoapods@latest"
   ],
   "shell": {
     "init_hook": [
