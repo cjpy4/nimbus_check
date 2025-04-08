@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/result.dart';
 import '../repositories/result_repository.dart';
 
@@ -10,6 +11,7 @@ final searchHistoryProvider = StateNotifierProvider<SearchHistoryNotifier, List<
   return SearchHistoryNotifier();
 });
 
+@riverpod
 class SearchHistoryNotifier extends StateNotifier<List<String>> {
   SearchHistoryNotifier() : super([]);
 
