@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/result.dart';
-import '../providers/result_providers.dart';
+import '../providers/check_provider.dart';
 
 class ResultTableWidget extends ConsumerWidget {
   final String imei;
@@ -10,7 +10,7 @@ class ResultTableWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final resultsAsync = ref.watch(resultsProvider(imei));
+    final resultsAsync = ref.watch(checkProvider(imei));
 
     return Card(
       margin: const EdgeInsets.all(16.0),
@@ -19,7 +19,11 @@ class ResultTableWidget extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildHeader(context, ref),
-          _buildContent(context, ref, resultsAsync),
+          _buildContent(
+            context,
+            ref,
+            resultsAsync
+          ),
         ],
       ),
     );
@@ -50,7 +54,7 @@ class ResultTableWidget extends ConsumerWidget {
             icon: const Icon(Icons.refresh),
             onPressed: () {
               // Manually refresh this specific result
-              ref.invalidate(resultsProvider(imei));
+              ref.invalidate(checkProvider(imei));
             },
             color: Theme.of(context).colorScheme.onPrimaryContainer,
             tooltip: 'Refresh results',
@@ -63,7 +67,7 @@ class ResultTableWidget extends ConsumerWidget {
   Widget _buildContent(
     BuildContext context,
     WidgetRef ref,
-    AsyncValue<List<Result>> resultsAsync,
+    AsyncValue<Map<String, dynamic>> resultsAsync,
   ) {
     return resultsAsync.when(
       loading:
@@ -83,7 +87,7 @@ class ResultTableWidget extends ConsumerWidget {
                   child: const Text('Retry'),
                   onPressed: () {
                     // Retry the request
-                    ref.invalidate(resultsProvider(imei));
+                    ref.invalidate(checkProvider(imei));
                   },
                 ),
               ],
@@ -125,17 +129,17 @@ class ResultTableWidget extends ConsumerWidget {
                             ),
                           ),
                         ],
-                        rows:
-                            results
-                                .map(
-                                  (result) => DataRow(
-                                    cells: <DataCell>[
-                                      DataCell(Text(result.key)),
-                                      DataCell(Text(result.value)),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
+                        rows: 
+                        results.entries
+                            .map(
+                              (entry) => DataRow(
+                                cells: <DataCell>[
+                                  DataCell(Text(entry.key)),
+                                  DataCell(Text(entry.value.toString())),
+                                ],
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   ),

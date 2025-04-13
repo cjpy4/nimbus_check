@@ -1,30 +1,37 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import '../models/result.dart';
 
-class ResultRepository {
+part 'check_repository.g.dart';
+
+class CheckRepository {
   static const String apiBaseUrl = String.fromEnvironment(
     'API_URL',
     defaultValue: 'https://tech-check.us/wkr/stdcheck',
   );
 
-  // Cache to store results to avoid duplicate API calls
-  final Map<String, ResultResponse> _cache = {};
+  // TODO: Implement caching
+  //
+  // // Cache to store results to avoid duplicate API calls
+  // final Map<String, ResultResponse> _cache = {};
 
-  // Check if a result is cached and not expired (30 minutes cache time)
-  ResultResponse? getCachedResult(String imei) {
-    final cachedResponse = _cache[imei];
-    if (cachedResponse != null) {
-      final cacheExpiry = cachedResponse.timestamp.add(const Duration(minutes: 30));
-      if (DateTime.now().isBefore(cacheExpiry)) {
-        return cachedResponse;
-      }
-    }
-    return null;
-  }
+  // // Check if a result is cached and not expired (30 minutes cache time)
+  // ResultResponse? getCachedResult(String imei) {
+  //   final cachedResponse = _cache[imei];
+  //   if (cachedResponse != null) {
+  //     final cacheExpiry = cachedResponse.timestamp.add(
+  //       const Duration(minutes: 30),
+  //     );
+  //     if (DateTime.now().isBefore(cacheExpiry)) {
+  //       return cachedResponse;
+  //     }
+  //   }
+  //   return null;
+  // }
 
-  Future<List<Result>> getResults({
+  Future<Map<String, dynamic>> getResults({
     required String imei,
     String format = 'beta',
     required String key,
@@ -32,12 +39,12 @@ class ResultRepository {
     bool useCache = true,
   }) async {
     // Check cache first if enabled
-    if (useCache) {
-      final cachedResponse = getCachedResult(imei);
-      if (cachedResponse != null) {
-        return cachedResponse.results;
-      }
-    }
+    // if (useCache) {
+    //   final cachedResponse = getCachedResult(imei);
+    //   if (cachedResponse != null) {
+    //     return cachedResponse.results;
+    //   }
+    // }
 
     try {
       var url = Uri.parse(apiBaseUrl);
@@ -70,15 +77,17 @@ class ResultRepository {
         var result = jsonResponse['result'] as Map<String, dynamic>;
         var entries =
             result.entries.map((entry) => Result.fromJson(entry)).toList();
-        
+
         // Cache the result
-        _cache[imei] = ResultResponse(
-          results: entries,
-          timestamp: DateTime.now(),
-          imei: imei,
-        );
-        
-        return entries;
+        // _cache[imei] = ResultResponse(
+        //   results: entries,
+        //   timestamp: DateTime.now(),
+        //   imei: imei,
+        // );
+        print(result);
+        print(entries);
+
+        return result;
       } else {
         throw Exception('Request failed with status: ${response.statusCode}');
       }
@@ -88,16 +97,16 @@ class ResultRepository {
   }
 
   // Clear the cache for a specific IMEI or the entire cache
-  void clearCache({String? imei}) {
-    if (imei != null) {
-      _cache.remove(imei);
-    } else {
-      _cache.clear();
-    }
-  }
+  //   void clearCache({String? imei}) {
+  //     if (imei != null) {
+  //       _cache.remove(imei);
+  //     } else {
+  //       _cache.clear();
+  //     }
+  //   }
 }
 
-// Provide a singleton instance of the repository
-final resultRepositoryProvider = Provider<ResultRepository>((ref) {
-  return ResultRepository();
-});
+@riverpod
+CheckRepository checkRepository(Ref ref) {
+  return CheckRepository();
+}
