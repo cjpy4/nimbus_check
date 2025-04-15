@@ -10,7 +10,8 @@ app.use('*', cors({
     'https://tech-check.us',
     'https://*.tech-check.us/*',
     'http://localhost:3000',
-    'http://localhost:8080'
+    'http://localhost:8080',
+    'http://localhost:50024'
   ],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
