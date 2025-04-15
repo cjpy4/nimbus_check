@@ -16,7 +16,12 @@ Future<Map<String, dynamic>> check(Ref ref, String imei) async {
   // ref.read(checkHistoryProvider.notifier).addSearch(imei);
 
   final results = repository.getResults(imei: imei, key: apiKey);
-  print(results);
+  print(results.then((map) {
+    map.forEach((key, value) {
+      print('$key: $value');
+    });
+    return map;
+  }));
 
   return results;
 }

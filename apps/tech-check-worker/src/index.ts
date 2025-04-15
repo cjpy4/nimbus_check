@@ -1,7 +1,24 @@
 import { env } from 'cloudflare:workers'
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 
 const app = new Hono()
+
+app.use('*', cors({
+  // For production, use specific origins:
+  origin: [
+    'https://tech-check.us',
+    'https://*.tech-check.us/*',
+    'http://localhost:3000',
+    'http://localhost:8080'
+  ],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  exposeHeaders: ['Content-Length'],
+  maxAge: 600,
+  credentials: true,
+}))
+
 
 app.get('/wkr', (c) => {
   return c.text('Hello from Tech Check Worker!')
