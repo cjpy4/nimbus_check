@@ -1,43 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/result_providers.dart';
+import '../providers/check_provider.dart';
+import '/repositories/search_repository.dart';
 
 class SearchHistoryWidget extends ConsumerWidget {
-  final Function(String) onSelect;
-
   const SearchHistoryWidget({
     super.key,
-    required this.onSelect,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchHistory = ref.watch(searchHistoryProvider);
 
-    if (searchHistory.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Card(
-      margin: const EdgeInsets.all(16.0),
+    return Drawer( // Wrap content in a Drawer
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch, // Make children fill width
         children: [
+          // Drawer Header
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.fromLTRB(16.0, MediaQuery.of(context).padding.top + 16.0, 16.0, 16.0), // Adjust top padding for status bar
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Recent Searches',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge, // Use theme text style
                 ),
                 TextButton(
                   onPressed: () {
-                    ref.read(searchHistoryProvider.notifier).clearHistory();
+                   // ref.read(searchHistoryProvider.notifier).clearHistory();
                   },
                   child: const Text('Clear All'),
                 ),
@@ -45,32 +36,48 @@ class SearchHistoryWidget extends ConsumerWidget {
             ),
           ),
           const Divider(height: 1),
-          SizedBox(
-            height: 50,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              itemCount: searchHistory.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 8.0),
-              itemBuilder: (context, index) {
-                final imei = searchHistory[index];
-                return Chip(
-                  label: Text(imei),
-                  onDeleted: () {
-                    ref.read(searchHistoryProvider.notifier).removeSearch(imei);
-                  },
-                  deleteIcon: const Icon(Icons.close, size: 18),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-                  labelStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  deleteIconColor: Theme.of(context).colorScheme.onSurfaceVariant,
-                );
-              },
+
+          // Show message if history is empty
+          if (!searchHistory.hasValue)
+            const Expanded(
+              child: Center(
+                child: Text('No recent searches.'),
+              ),
+            )
+          else
+            // Scrollable list of history items
+            Expanded( // Make the list take remaining space
+              child: searchHistory.when(data: (searches) {
+                if (searches.isEmpty) {
+                  return const Center(
+                    child: Text('No checks yet.'),
+                  );
+                }
+
+              }, error: error, loading: loading)
+              
+               ListView.builder( // Use ListView.builder for vertical list
+                itemCount: searchHistory.length,
+                itemBuilder: (context, index) {
+                  final imei = searchHistory[index];
+                  return ListTile( // Use ListTile for better structure and tap target
+                    title: Text(imei),
+                    trailing: IconButton( // Use IconButton for delete action
+                      icon: const Icon(Icons.close, size: 18),
+                      tooltip: 'Remove search',
+                      onPressed: () {
+                       // ref.read(searchHistoryProvider).removeSearch(imei);
+                      },
+                    ),
+                    onTap: () {
+                       // Trigger the check for the selected IMEI
+                       ref.read(checkProvider(imei));
+                       Navigator.pop(context); // Close the drawer after selection
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
         ],
       ),
     );

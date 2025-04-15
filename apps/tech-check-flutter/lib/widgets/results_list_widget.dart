@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/result_providers.dart';
 import 'result_table_widget.dart';
+import '../repositories/search_repository.dart';
 
 class ResultsListWidget extends ConsumerWidget {
   const ResultsListWidget({super.key});
@@ -53,7 +53,7 @@ class ResultsListWidget extends ConsumerWidget {
             child: const Icon(Icons.delete_outline, color: Colors.white),
           ),
           onDismissed: (_) {
-            ref.read(searchHistoryProvider.notifier).removeSearch(imei);
+            //ref.read(searchHistoryProvider).removeSearch(imei);
           },
           child: ResultTableWidget(imei: imei),
         );

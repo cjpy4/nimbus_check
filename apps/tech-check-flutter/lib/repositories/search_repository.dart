@@ -21,7 +21,7 @@ class SearchRepository {
         );
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getResults() {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getSearches() {
     return _firestore.collection('searches').snapshots();
   }
   
@@ -39,7 +39,15 @@ SearchRepository searchRepository(Ref ref) {
 
 // Create a provider that exposes the stream of results
 @riverpod
-Stream<QuerySnapshot<Map<String, dynamic>>> searchHistory(Ref ref) {
+Stream<List<Map<String, dynamic>>> searchHistory(Ref ref) {
   final repository = ref.watch(searchRepositoryProvider);
-  return repository.getResults();
+  return repository.getSearches().map((querySnapshot) {
+  
+    final documents = querySnapshot.docs;
+
+    final searches = documents
+        .map((doc) => doc.data())
+        .toList(); // Non-null list of Strings
+    return searches;
+  });
 }
