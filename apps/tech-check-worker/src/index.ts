@@ -9,9 +9,7 @@ app.use('*', cors({
   origin: [
     'https://tech-check.us',
     'https://*.tech-check.us/*',
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'http://localhost:50024'
+    'http://localhost:*',
   ],
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
