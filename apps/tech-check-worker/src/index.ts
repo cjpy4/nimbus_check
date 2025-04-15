@@ -6,11 +6,12 @@ const app = new Hono()
 
 app.use('*', cors({
   // For production, use specific origins:
-  origin: [
-    'https://tech-check.us',
-    'https://*.tech-check.us/*',
-    'http://localhost:*',
-  ],
+  origin: (origin, c) => {
+    if (!origin) return origin;
+    return origin.startsWith('http://localhost:') ? origin :
+          origin === 'https://tech-check.us' ? origin :
+          (origin.startsWith('https://') && origin.includes('.tech-check.us')) ? origin : null;
+  },
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
   exposeHeaders: ['Content-Length'],
