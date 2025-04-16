@@ -11,16 +11,21 @@ const apiKey = 'V29-1J2-0JX-CDL-DFT-TUZ-SM6-BHJ';
 // Converting resultsProvider to use annotation
 @riverpod
 Future<Map<String, dynamic>> check(Ref ref, String imei) async {
-  final repository = ref.watch(checkRepositoryProvider);
-  final searchRepository = ref.watch(searchRepositoryProvider);
-  // Add to search history
-  // ref.read(checkHistoryProvider.notifier).addSearch(imei);
+  
+  if (imei == 'IMEI Here' || imei.isEmpty) {
+         return {};
+       }
+       
+  final repository = ref.read(checkRepositoryProvider);
+  final searchRepository = ref.read(searchRepositoryProvider);
 
   final results = await repository.getResults(imei: imei, key: apiKey);
 
-  print(results);
+  print("Results: $results");
 
-  await searchRepository.addRecord(results); // Ensure async operation completes
+  if (results.isNotEmpty) {
+    await searchRepository.addRecord(results);
+  }
 
   return results;
 }

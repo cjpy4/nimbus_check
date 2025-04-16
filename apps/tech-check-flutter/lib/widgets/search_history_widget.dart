@@ -63,7 +63,6 @@ class SearchHistoryWidget extends ConsumerWidget {
                     itemCount: searches.length,
                     itemBuilder: (context, index) {
                       final imei = searches[index];
-                      print(imei);
                       return ListTile(
                         // Use ListTile for better structure and tap target
                         title: Text('placholder'),

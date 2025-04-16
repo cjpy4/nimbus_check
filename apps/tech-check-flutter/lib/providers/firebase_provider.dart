@@ -1,30 +1,32 @@
 import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// provider to access the FirebaseAuth instance
-final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
+part 'firebase_provider.g.dart';
+
+@riverpod
+FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
   return FirebaseAuth.instance;
-});
+}
 
-// Simple provider to expose the auth state
-final authStateChangesProvider = StreamProvider.autoDispose<User?>((ref) {
-  // get FirebaseAuth from the provider below
+@riverpod
+Stream<User?> authStateChanges(AuthStateChangesRef ref) {
   final firebaseAuth = ref.watch(firebaseAuthProvider);
-  // call a method that returns a Stream<User?>
   return firebaseAuth.authStateChanges();
-});
+}
 
-// final firebaseInstanceProivder = AsyncNotifier.autoDispose<FirebaseApp>((ref) async {
+// Uncomment when firebase_options.dart is available
+// @riverpod
+// Future<FirebaseApp> firebaseInstance(FirebaseInstanceRef ref) async {
 //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 //   return Firebase.app();
-// });
-
-final fireStoreProvider = Provider<FirebaseFirestore>((ref) {
+// }
+// 
+@riverpod
+FirebaseFirestore fireStore(FireStoreRef ref) {
   return FirebaseFirestore.instance;
-});
+}
 
 
 

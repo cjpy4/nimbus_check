@@ -84,9 +84,6 @@ class CheckRepository {
         //   timestamp: DateTime.now(),
         //   imei: imei,
         // );
-        print(result);
-        print(entries);
-
         return result;
       } else {
         throw Exception('Request failed with status: ${response.statusCode}');

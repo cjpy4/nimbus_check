@@ -9,7 +9,7 @@ class ResultsListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchHistory = ref.watch(searchHistoryProvider);
-    
+
     return Center(
       child: searchHistory.when(
         data: (data) {
@@ -43,25 +43,12 @@ class ResultsListWidget extends ConsumerWidget {
               ],
             );
           }
-
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
-              final imei = data[index];
-              return Dismissible(
-                key: Key('result-$imei'),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.only(right: 16.0),
-                  color: Colors.red,
-                  child: const Icon(Icons.delete_outline, color: Colors.white),
-                ),
-                onDismissed: (_) {
-                  //ref.read(searchHistoryProvider).removeSearch(imei);
-                },
-                child: ResultTableWidget(imei: 'IMEI Here'),
-              );
+              final imei = data[index]['IMEI'];
+              final record = data[index];
+              return ResultTableWidget(imei: imei, results: record);
             },
           );
         },
