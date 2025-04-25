@@ -6,7 +6,7 @@ part of 'check_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checkHash() => r'7b0750586871b667c35b0f2e654600e6c2e58567';
+String _$checkHash() => r'30cfbbbb02cbf2f824f9576b3711d271808dfac2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -39,13 +39,13 @@ class CheckFamily extends Family<AsyncValue<Map<String, dynamic>>> {
   const CheckFamily();
 
   /// See also [check].
-  CheckProvider call(String imei) {
-    return CheckProvider(imei);
+  CheckProvider call(String imei, ServiceType service) {
+    return CheckProvider(imei, service);
   }
 
   @override
   CheckProvider getProviderOverride(covariant CheckProvider provider) {
-    return call(provider.imei);
+    return call(provider.imei, provider.service);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -66,9 +66,9 @@ class CheckFamily extends Family<AsyncValue<Map<String, dynamic>>> {
 /// See also [check].
 class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
   /// See also [check].
-  CheckProvider(String imei)
+  CheckProvider(String imei, ServiceType service)
     : this._internal(
-        (ref) => check(ref as CheckRef, imei),
+        (ref) => check(ref as CheckRef, imei, service),
         from: checkProvider,
         name: r'checkProvider',
         debugGetCreateSourceHash:
@@ -76,6 +76,7 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
         dependencies: CheckFamily._dependencies,
         allTransitiveDependencies: CheckFamily._allTransitiveDependencies,
         imei: imei,
+        service: service,
       );
 
   CheckProvider._internal(
@@ -86,9 +87,11 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.imei,
+    required this.service,
   }) : super.internal();
 
   final String imei;
+  final ServiceType service;
 
   @override
   Override overrideWith(
@@ -104,6 +107,7 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         imei: imei,
+        service: service,
       ),
     );
   }
@@ -115,13 +119,16 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
 
   @override
   bool operator ==(Object other) {
-    return other is CheckProvider && other.imei == imei;
+    return other is CheckProvider &&
+        other.imei == imei &&
+        other.service == service;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, imei.hashCode);
+    hash = _SystemHash.combine(hash, service.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -132,6 +139,9 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
 mixin CheckRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
   /// The parameter `imei` of this provider.
   String get imei;
+
+  /// The parameter `service` of this provider.
+  ServiceType get service;
 }
 
 class _CheckProviderElement
@@ -141,6 +151,8 @@ class _CheckProviderElement
 
   @override
   String get imei => (origin as CheckProvider).imei;
+  @override
+  ServiceType get service => (origin as CheckProvider).service;
 }
 
 // ignore_for_file: type=lint

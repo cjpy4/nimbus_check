@@ -1,3 +1,4 @@
+import 'package:device_check/models/serviceTypes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -7,11 +8,14 @@ import '../models/result.dart';
 part 'check_repository.g.dart';
 
 class CheckRepository {
-  static const String apiBaseUrl = String.fromEnvironment(
-    'API_URL',
-    defaultValue: 'https://tech-check.us/wkr/stdcheck',
-  );
+  static String get apiBaseUrl {
+    const env = String.fromEnvironment('APP_ENV', defaultValue: 'prod');
 
+    if (env == 'dev') {
+      return 'http://localhost:8787/wkr';
+    }
+    return 'https://tech-check.us/wkr';
+  }
   // TODO: Implement caching
   //
   // // Cache to store results to avoid duplicate API calls
@@ -34,8 +38,7 @@ class CheckRepository {
   Future<Map<String, dynamic>> getResults({
     required String imei,
     String format = 'beta',
-    required String key,
-    String service = 'demo',
+    required ServiceType service,
     bool useCache = true,
   }) async {
     // Check cache first if enabled
@@ -45,16 +48,13 @@ class CheckRepository {
     //     return cachedResponse.results;
     //   }
     // }
-
+    final route = service.route;
     try {
-      var url = Uri.parse(apiBaseUrl);
+      var url = Uri.parse(apiBaseUrl+route);
 
       // Create request body from parameters
       Map<String, String> requestBody = {
-        'format': format,
-        'key': key,
-        'service': service,
-        'imei': imei,
+        'imei': imei
       };
 
       var response = await http.post(

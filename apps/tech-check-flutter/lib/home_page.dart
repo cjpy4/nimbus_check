@@ -4,6 +4,7 @@ import 'widgets/imei_form_widget.dart';
 import 'widgets/results_list_widget.dart';
 import 'widgets/search_history_widget.dart';
 import 'providers/check_provider.dart';
+import 'models/serviceTypes.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -39,7 +40,7 @@ class HomePage extends ConsumerWidget {
             IMEIFormWidget(
               onSubmit: (imei) {
                 // Trigger the providers with the specific IMEI
-                ref.read(checkProvider(imei));
+                ref.read(checkProvider(imei, ServiceType.appleWatch));
               },
             ),
           ],

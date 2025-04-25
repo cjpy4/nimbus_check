@@ -5,26 +5,39 @@ import '../providers/check_provider.dart';
 
 class ResultTableWidget extends StatelessWidget {
   final String imei;
-  final Map<String, dynamic> results; 
-  
+  final Map<String, dynamic> results;
+
   const ResultTableWidget({
-     super.key, 
-     required this.imei, 
-     required this.results
-   });
+    super.key,
+    required this.imei,
+    required this.results,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      elevation: 4.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildHeader(context),
-          _buildContent(context, results),
-        ],
-      ),
+    double maxWidth;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        if (screenWidth < 600) {
+          maxWidth = double.infinity;
+        } else if (screenWidth < 1200) {
+          maxWidth = screenWidth * 1 / 2;
+        } else {
+          maxWidth = screenWidth * 1 / 3;
+        }
+        return SizedBox(
+          width: maxWidth,
+          child: Card(
+            margin: const EdgeInsets.all(16.0),
+            elevation: 4.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [_buildHeader(context), _buildContent(context, results)],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -57,17 +70,14 @@ class ResultTableWidget extends StatelessWidget {
           //   color: Theme.of(context).colorScheme.onPrimaryContainer,
           //   tooltip: 'Refresh results',
           // ),
-          // TODO: Implement live account balance 
-          Text('Remaining Balance: \$100,000,000')
+          // TODO: Implement live account balance
+          Text('Remaining Balance: \$100,000,000'),
         ],
       ),
     );
   }
 
-  Widget _buildContent(
-    BuildContext context,
-    Map<String, dynamic> results,
-  ) {
+  Widget _buildContent(BuildContext context, Map<String, dynamic> results) {
     return results.isEmpty
         ? const Padding(
           padding: EdgeInsets.all(24.0),
@@ -102,19 +112,19 @@ class ResultTableWidget extends StatelessWidget {
                   ),
                 ),
               ],
-        rows:
-          results.entries
-            .map(
-              (entry) => DataRow(
-                cells: <DataCell>[
-                  DataCell(Text(entry.key)),
-                  DataCell(Text(entry.value.toString())),
-                ],
-               ),
-             )
-              .toList(),
+              rows:
+                  results.entries
+                      .map(
+                        (entry) => DataRow(
+                          cells: <DataCell>[
+                            DataCell(Text(entry.key)),
+                            DataCell(Text(entry.value.toString())),
+                          ],
+                        ),
+                      )
+                      .toList(),
+            ),
           ),
-        ),
-      );
+        );
   }
 }
