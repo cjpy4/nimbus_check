@@ -28,20 +28,25 @@ class HomePage extends ConsumerWidget {
       ),
       // End drawer for search history
       endDrawer: const SearchHistoryWidget(),
-      body: Builder( // Use Builder to get context for Scaffold.of(context)
-        builder: (context) => Column(
+      body: Builder(
+        builder: (context) => Stack(
           children: [
             // Main content - scrollable list of results
-            const Expanded(
+            const Positioned.fill(
               child: ResultsListWidget(),
             ),
-            
-            // IMEI form at the bottom
-            IMEIFormWidget(
-              onSubmit: (imei) {
-                // Trigger the providers with the specific IMEI
-                ref.read(checkProvider(imei, ServiceType.appleWatch));
-              },
+            // Floating IMEI form at the bottom center
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 32,
+              child: Center(
+                child: IMEIFormWidget(
+                  onSubmit: (imei, serviceType) {
+                    ref.read(checkProvider(imei, serviceType));
+                  },
+                ),
+              ),
             ),
           ],
         ),

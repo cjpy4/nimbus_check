@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/result.dart';
-import '../providers/check_provider.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import '../models/result.dart';
+// import '../providers/check_provider.dart';
 
 class ResultTableWidget extends StatelessWidget {
   final String imei;
@@ -20,20 +20,26 @@ class ResultTableWidget extends StatelessWidget {
       builder: (context, constraints) {
         final screenWidth = MediaQuery.of(context).size.width;
         if (screenWidth < 600) {
-          maxWidth = double.infinity;
+          maxWidth = screenWidth * 0.95;
         } else if (screenWidth < 1200) {
-          maxWidth = screenWidth * 1 / 2;
+          maxWidth = screenWidth * 0.6;
         } else {
-          maxWidth = screenWidth * 1 / 3;
+          maxWidth = 900; // Fixed max width for larger screens
         }
-        return SizedBox(
-          width: maxWidth,
-          child: Card(
-            margin: const EdgeInsets.all(16.0),
-            elevation: 4.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [_buildHeader(context), _buildContent(context, results)],
+        return Center(
+          child: Container(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            width: maxWidth,
+            child: Card(
+              margin: const EdgeInsets.all(16.0),
+              elevation: 4.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildHeader(context),
+                  _buildContent(context, results, maxWidth),
+                ],
+              ),
             ),
           ),
         );
@@ -77,54 +83,60 @@ class ResultTableWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, Map<String, dynamic> results) {
+  Widget _buildContent(BuildContext context, Map<String, dynamic> results, double maxWidth) {
     return results.isEmpty
         ? const Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Center(child: Text('No results found')),
-        )
-        : Container(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Name',
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Value',
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-              rows:
-                  results.entries
-                      .map(
-                        (entry) => DataRow(
-                          cells: <DataCell>[
-                            DataCell(Text(entry.key)),
-                            DataCell(Text(entry.value.toString())),
-                          ],
+            padding: EdgeInsets.all(24.0),
+            child: Center(child: Text('No results found')),
+          )
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: double.infinity,
+              child: DataTable(
+                columnSpacing: 24,
+                dataRowMaxHeight: double.infinity,
+                dataRowMinHeight: 32,
+                horizontalMargin: 16,
+                border: TableBorder.all(color: Colors.transparent),
+                columns: <DataColumn>[
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Name',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
                         ),
-                      )
-                      .toList(),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Value',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                rows: results.entries
+                    .map(
+                      (entry) => DataRow(
+                        cells: <DataCell>[
+                          DataCell(Text(entry.key, style: const TextStyle(fontSize: 13))),
+                          DataCell(Text(entry.value.toString(), style: const TextStyle(fontSize: 13))),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
-          ),
-        );
+          );
   }
 }
