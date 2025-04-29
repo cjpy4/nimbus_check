@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:developer';
 import '../models/serviceTypes.dart';
 
 class IMEIFormWidget extends StatefulWidget {
@@ -16,7 +15,7 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController();
   bool _isLoading = false;
-  ServiceType _selectedService = ServiceType.appleWatch;
+  ServiceType _selectedService = ServiceType.iPhone;
   bool _dropdownOpen = false;
   bool _dropdownHover = false;
 
@@ -60,7 +59,7 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
 
   // Helper to get the display widget for the selected service
   Widget _serviceIcon({bool withText = false}) {
-    final icon = Icon(_selectedService.icon, size: 18);
+    final icon = Icon(_selectedService.icon, weight: 100, size: 18);
     if (withText) {
       return Row(
         mainAxisSize: MainAxisSize.min,
@@ -93,7 +92,7 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
           value: service,
           child: Row(
             children: [
-              Icon(service.icon, size: 18),
+              Icon(service.icon, weight: 100, size: 18),
               const SizedBox(width: 4),
               Text(service.displayName, style: const TextStyle(fontSize: 13)),
             ],
@@ -149,8 +148,8 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
                             child: TextFormField(
                               controller: _controller,
                               decoration: InputDecoration(
-                                labelText: 'Enter IMEI',
-                                hintText: 'e.g., 123456789012345',
+                                labelText: 'Enter Serial or IMEI #',
+                                hintText: 'e.g., 012428000154566',
                                 border: const OutlineInputBorder(
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(4.0),
@@ -208,7 +207,7 @@ class _IMEIFormWidgetState extends State<IMEIFormWidget> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               _serviceIcon(withText: _dropdownOpen || _dropdownHover),
-                                              const Icon(Icons.arrow_drop_down, size: 18),
+                                              const Icon(Icons.arrow_drop_down,weight: 100, size: 18),
                                             ],
                                           ),
                                         ),

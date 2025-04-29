@@ -1,10 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/check_provider.dart';
 import '/repositories/search_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchHistoryWidget extends ConsumerWidget {
   const SearchHistoryWidget({super.key});
+  
+  String formatCreatedAt(dynamic createdAt) {
+    if (createdAt == null) return 'No timestamp';
+  
+    if (createdAt is DateTime) {
+      return '${createdAt.toLocal()}';
+      // or use intl package for pretty formatting.
+      // DateFormat.yMMMd().add_jm().format(createdAt)
+    }
+    // If you use Firestore Timestamp:
+    if (createdAt is Timestamp) {
+      // From cloud_firestore, to DateTime
+      return '${createdAt.toDate().toLocal()}';
+    }
+    // If it's a String (maybe already serialized)
+    if (createdAt is String) {
+      // Try to parse it
+      try {
+        final parsed = DateTime.parse(createdAt);
+        return '${parsed.toLocal()}';
+      } catch (_) {
+        return createdAt;
+      }
+    }
+    // Anything else
+    return createdAt.toString();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,11 +61,11 @@ class SearchHistoryWidget extends ConsumerWidget {
                         context,
                       ).textTheme.titleLarge, // Use theme text style
                 ),
-                TextButton(
+                IconButton(
                   onPressed: () {
                     // ref.read(searchHistoryProvider.notifier).clearHistory();
                   },
-                  child: const Text('Clear All'),
+                  icon: Icon(Icons.close),
                 ),
               ],
             ),
@@ -65,14 +92,9 @@ class SearchHistoryWidget extends ConsumerWidget {
                       final imei = searches[index];
                       return ListTile(
                         // Use ListTile for better structure and tap target
-                        title: Text('placholder'),
-                        trailing: IconButton(
-                          // Use IconButton for delete action
-                          icon: const Icon(Icons.close, size: 18),
-                          tooltip: 'Remove search',
-                          onPressed: () {
-                            // ref.read(searchHistoryProvider).removeSearch(imei);
-                          },
+                        title: Text(imei['IMEI']),
+                        trailing: Text(
+                          formatCreatedAt(imei['createdAt']),
                         ),
                         onTap: () {
                           // Trigger the check for the selected IMEI

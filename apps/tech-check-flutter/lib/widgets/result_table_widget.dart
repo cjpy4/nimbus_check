@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // import '../models/result.dart';
 // import '../providers/check_provider.dart';
 
+
 class ResultTableWidget extends StatelessWidget {
   final String imei;
   final Map<String, dynamic> results;
@@ -12,7 +13,7 @@ class ResultTableWidget extends StatelessWidget {
     required this.imei,
     required this.results,
   });
-
+  
   @override
   Widget build(BuildContext context) {
     double maxWidth;
@@ -77,14 +78,22 @@ class ResultTableWidget extends StatelessWidget {
           //   tooltip: 'Refresh results',
           // ),
           // TODO: Implement live account balance
-          Text('Remaining Balance: \$100,000,000'),
+          Text('Remaining Checks: 27'),
         ],
       ),
     );
   }
 
   Widget _buildContent(BuildContext context, Map<String, dynamic> results, double maxWidth) {
-    return results.isEmpty
+    // Filter out null or empty values
+    final filteredResults = Map.fromEntries(
+      results.entries.where((entry) => 
+        entry.value != null && 
+        entry.value.toString().trim().isNotEmpty
+      )
+    );
+
+    return filteredResults.isEmpty
         ? const Padding(
             padding: EdgeInsets.all(24.0),
             child: Center(child: Text('No results found')),
@@ -125,7 +134,7 @@ class ResultTableWidget extends StatelessWidget {
                     ),
                   ),
                 ],
-                rows: results.entries
+                rows: filteredResults.entries
                     .map(
                       (entry) => DataRow(
                         cells: <DataCell>[

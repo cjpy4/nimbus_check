@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-import '../models/result.dart';
 
 part 'check_repository.g.dart';
 
@@ -50,12 +49,10 @@ class CheckRepository {
     // }
     final route = service.route;
     try {
-      var url = Uri.parse(apiBaseUrl+route);
+      var url = Uri.parse(apiBaseUrl + route);
 
       // Create request body from parameters
-      Map<String, String> requestBody = {
-        'imei': imei
-      };
+      Map<String, String> requestBody = {'imei': imei};
 
       var response = await http.post(
         url,
@@ -75,8 +72,15 @@ class CheckRepository {
         }
 
         var result = jsonResponse['result'] as Map<String, dynamic>;
-        var entries =
-            result.entries.map((entry) => Result.fromJson(entry)).toList();
+        const finalResKeys = {'Model Name', 'Serial Number', 'iCloud Lock', 'MDM Lock', 'Sim-Lock Status', 'Locked Carrier', 'Blacklist Status', 'IMEI'};
+        final filteredResult = <String, dynamic>{};
+        for (var key in finalResKeys) {
+          if (result.containsKey(key)) {
+            filteredResult[key] = result[key];
+          }
+        }
+        // var entries =
+        //     result.entries.map((entry) => Result.fromJson(entry)).toList();
 
         // Cache the result
         // _cache[imei] = ResultResponse(
@@ -84,7 +88,7 @@ class CheckRepository {
         //   timestamp: DateTime.now(),
         //   imei: imei,
         // );
-        return result;
+        return filteredResult;
       } else {
         throw Exception('Request failed with status: ${response.statusCode}');
       }
