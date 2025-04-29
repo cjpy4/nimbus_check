@@ -13,6 +13,7 @@
 migrate_working_dir/
 .dev.vars
 node_modules/
+result.json
 
 # IntelliJ related
 *.iml

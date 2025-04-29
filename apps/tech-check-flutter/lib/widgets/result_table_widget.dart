@@ -1,31 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/result.dart';
-import '../providers/result_providers.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import '../models/result.dart';
+// import '../providers/check_provider.dart';
 
-class ResultTableWidget extends ConsumerWidget {
+
+class ResultTableWidget extends StatelessWidget {
   final String imei;
+  final Map<String, dynamic> results;
 
-  const ResultTableWidget({super.key, required this.imei});
-
+  const ResultTableWidget({
+    super.key,
+    required this.imei,
+    required this.results,
+  });
+  
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final resultsAsync = ref.watch(resultsProvider(imei));
-
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      elevation: 4.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildHeader(context, ref),
-          _buildContent(context, ref, resultsAsync),
-        ],
-      ),
+  Widget build(BuildContext context) {
+    double maxWidth;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        if (screenWidth < 600) {
+          maxWidth = screenWidth * 0.95;
+        } else if (screenWidth < 1200) {
+          maxWidth = screenWidth * 0.6;
+        } else {
+          maxWidth = 900; // Fixed max width for larger screens
+        }
+        return Center(
+          child: Container(
+            constraints: BoxConstraints(maxWidth: maxWidth),
+            width: maxWidth,
+            child: Card(
+              margin: const EdgeInsets.all(16.0),
+              elevation: 4.0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildHeader(context),
+                  _buildContent(context, results, maxWidth),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHeader(BuildContext context, WidgetRef ref) {
+  Widget _buildHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -46,99 +69,83 @@ class ResultTableWidget extends ConsumerWidget {
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              // Manually refresh this specific result
-              ref.invalidate(resultsProvider(imei));
-            },
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-            tooltip: 'Refresh results',
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.refresh),
+          //   onPressed: () {
+          //     // Manually refresh this specific result
+          //   },
+          //   color: Theme.of(context).colorScheme.onPrimaryContainer,
+          //   tooltip: 'Refresh results',
+          // ),
+          // TODO: Implement live account balance
+          Text('Remaining Checks: 27'),
         ],
       ),
     );
   }
 
-  Widget _buildContent(
-    BuildContext context,
-    WidgetRef ref,
-    AsyncValue<List<Result>> resultsAsync,
-  ) {
-    return resultsAsync.when(
-      loading:
-          () => const Padding(
+  Widget _buildContent(BuildContext context, Map<String, dynamic> results, double maxWidth) {
+    // Filter out null or empty values
+    final filteredResults = Map.fromEntries(
+      results.entries.where((entry) => 
+        entry.value != null && 
+        entry.value.toString().trim().isNotEmpty
+      )
+    );
+
+    return filteredResults.isEmpty
+        ? const Padding(
             padding: EdgeInsets.all(24.0),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-      error:
-          (error, stack) => Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                const SizedBox(height: 16),
-                Text('Error: ${error.toString()}'),
-                TextButton(
-                  child: const Text('Retry'),
-                  onPressed: () {
-                    // Retry the request
-                    ref.invalidate(resultsProvider(imei));
-                  },
-                ),
-              ],
-            ),
-          ),
-      data:
-          (results) =>
-              results.isEmpty
-                  ? const Padding(
-                    padding: EdgeInsets.all(24.0),
-                    child: Center(child: Text('No results found')),
-                  )
-                  : Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: DataTable(
-                        columns: const <DataColumn>[
-                          DataColumn(
-                            label: Expanded(
-                              child: Text(
-                                'Name',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Expanded(
-                              child: Text(
-                                'Value',
-                                style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                        rows:
-                            results
-                                .map(
-                                  (result) => DataRow(
-                                    cells: <DataCell>[
-                                      DataCell(Text(result.key)),
-                                      DataCell(Text(result.value)),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
+            child: Center(child: Text('No results found')),
+          )
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              width: double.infinity,
+              child: DataTable(
+                columnSpacing: 24,
+                dataRowMaxHeight: double.infinity,
+                dataRowMinHeight: 32,
+                horizontalMargin: 16,
+                border: TableBorder.all(color: Colors.transparent),
+                columns: <DataColumn>[
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Name',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ),
-    );
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Value',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                rows: filteredResults.entries
+                    .map(
+                      (entry) => DataRow(
+                        cells: <DataCell>[
+                          DataCell(Text(entry.key, style: const TextStyle(fontSize: 13))),
+                          DataCell(Text(entry.value.toString(), style: const TextStyle(fontSize: 13))),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          );
   }
 }
