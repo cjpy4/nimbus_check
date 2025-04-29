@@ -28,6 +28,7 @@ app.use('*', cors({
 
 const api_key = env.SICKW_API_KEY
 
+
 app.get('/wkr', (c) => {
   return c.text('Hello from Tech Check!')
 })
