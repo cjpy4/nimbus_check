@@ -46,9 +46,9 @@ class ResultsListWidget extends ConsumerWidget {
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
-              final imei = data[index]['IMEI'] ?? 'Unknown IMEI';
-              final record = data[index] ?? <String, dynamic>{};
-              return ResultTableWidget(imei: imei, results: record);
+              // final imei = data[index]['imei'] ?? 'Unknown IMEI';
+              final record = data[index];
+              return ResultTableWidget(results: record);
             },
           );
         },
