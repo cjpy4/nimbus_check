@@ -71,14 +71,6 @@ class CheckRepository {
           throw Exception('Response missing "result" key: $jsonResponse');
         }
 
-        var result = jsonResponse['result'] as Map<String, dynamic>;
-        const finalResKeys = {'Model Name', 'Serial Number', 'iCloud Lock', 'MDM Lock', 'Sim-Lock Status', 'Locked Carrier', 'Blacklist Status', 'IMEI'};
-        final filteredResult = <String, dynamic>{};
-        for (var key in finalResKeys) {
-          if (result.containsKey(key)) {
-            filteredResult[key] = result[key];
-          }
-        }
         // var entries =
         //     result.entries.map((entry) => Result.fromJson(entry)).toList();
 
@@ -88,7 +80,7 @@ class CheckRepository {
         //   timestamp: DateTime.now(),
         //   imei: imei,
         // );
-        return filteredResult;
+        return jsonResponse;
       } else {
         throw Exception('Request failed with status: ${response.statusCode}');
       }

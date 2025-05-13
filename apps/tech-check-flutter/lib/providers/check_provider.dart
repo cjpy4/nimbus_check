@@ -1,5 +1,5 @@
-import 'package:device_check/models/serviceTypes.dart';
-import 'package:device_check/repositories/search_repository.dart';
+import '../models/serviceTypes.dart';
+import '../repositories/search_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/check_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
