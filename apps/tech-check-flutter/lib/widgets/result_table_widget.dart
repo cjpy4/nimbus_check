@@ -51,7 +51,7 @@ class ResultTableWidget extends StatelessWidget {
     final orderNumber = results['id'];
     final timestamp = results['createdAt'];
     final accountBalance = results['balance'];
-    final String deviceName = (data['Model Number'] ?? data['Model Name'])?.toString() ?? 'Unknown Device';
+    final String deviceName = (data['Model Number'] ?? data['Model Name'] ?? data['Model Description'] ?? data['Model'] )?.toString()?? 'Unknown';
 
     return LayoutBuilder(
       builder: (context, constraints) {
