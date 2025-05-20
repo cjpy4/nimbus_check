@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ResultTableWidget extends StatelessWidget {
   final Map<String, dynamic> results;
-  
+
   // Safely get a value from a Map with a fallback
   String? safeGet(Map<String, dynamic> map, String key) {
     return map[key]?.toString();
@@ -47,11 +48,18 @@ class ResultTableWidget extends StatelessWidget {
     final data = results['result'] ?? results;
 
     // Display Fields
-    final String searchNumber = (results['imei'] ?? results['IMEI'])?.toString() ?? 'Unknown';
+    final String searchNumber =
+        (results['imei'] ?? results['IMEI'])?.toString() ?? 'Unknown';
     final orderNumber = results['id'];
     final timestamp = results['createdAt'];
     final accountBalance = results['balance'];
-    final String deviceName = (data['Model Number'] ?? data['Model Name'] ?? data['Model Description'] ?? data['Model'] )?.toString()?? 'Unknown';
+    final String deviceName =
+        (data['Model Number'] ??
+                data['Model Name'] ??
+                data['Model Description'] ??
+                data['Model'])
+            ?.toString() ??
+        'Unknown';
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -152,7 +160,9 @@ class ResultTableWidget extends StatelessWidget {
                     'Account Balance:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text('\$${accountBalance?.toString() ?? 'Check Account Page'}'),
+                  Text(
+                    '\$${accountBalance?.toString() ?? 'Check Account Page'}',
+                  ),
                 ],
               ),
             ],
@@ -170,8 +180,9 @@ class ResultTableWidget extends StatelessWidget {
   ) {
     // Ensure searchNumber is never null for display
     searchNumber = searchNumber.isNotEmpty ? searchNumber : 'Unknown';
+    String icloudLockKey = '${searchNumber}Find My iPhone';
     //var result = jsonResponse['result'] as Map<String, dynamic>;
-    const finalResKeys = {
+    var finalResKeys = {
       'Model Name',
       'Serial Number',
       'IMEI',
@@ -180,6 +191,7 @@ class ResultTableWidget extends StatelessWidget {
       'Sim-Lock Status',
       'Locked Carrier',
       'Blacklist Status',
+      icloudLockKey,
     };
 
     final filteredResults = <String, dynamic>{};
@@ -187,6 +199,12 @@ class ResultTableWidget extends StatelessWidget {
       if (results.containsKey(key) && results[key] != null) {
         filteredResults[key] = results[key];
       }
+    }
+
+    if (filteredResults.containsKey(icloudLockKey)) {
+      String newKey = icloudLockKey.replaceFirst(searchNumber, "");
+      filteredResults[newKey] = filteredResults[icloudLockKey];
+      filteredResults.remove(icloudLockKey);
     }
 
     // Filter out null or empty values
@@ -204,7 +222,7 @@ class ResultTableWidget extends StatelessWidget {
         )
         : Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: DataTable(
               columnSpacing: 24,
@@ -216,7 +234,7 @@ class ResultTableWidget extends StatelessWidget {
                 DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Search Number: ${searchNumber}',
+                      'Search Number: $searchNumber',
                       style: const TextStyle(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.bold,

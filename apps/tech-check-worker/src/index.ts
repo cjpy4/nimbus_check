@@ -566,8 +566,10 @@ app.post('/wkr/imac', async (c) => {
     
     // 3. Prepare request parameters
     // const blacklistFMIService = 61;
-    // const appleMDMService = 72;
-    const urlFMI = `https://sickw.com/api.php?format=beta&key=${api_key}&imei=${imei}&service=${61}`
+    // const appleMDMGSXService = 72;
+    // const appleMDMService = 81;
+    // iCloud on/off = 3
+    const urlFMI = `https://sickw.com/api.php?format=beta&key=${api_key}&imei=${imei}&service=${3}`
     const urlMDM = `https://sickw.com/api.php?format=beta&key=${api_key}&imei=${imei}&service=${81}`
     
     // 4. FMI BlackList API request
@@ -697,7 +699,8 @@ app.post('/wkr/macbook', async (c) => {
     // 3. Prepare request parameters
     // const blacklistFMIService = 61;
     // const appleMDMService = 72;
-    const urlFMI = `https://sickw.com/api.php?format=beta&key=${api_key}&imei=${imei}&service=${61}`
+    // // iCloud on/off = 3
+    const urlFMI = `https://sickw.com/api.php?format=beta&key=${api_key}&imei=${imei}&service=${3}`
     const urlMDM = `https://sickw.com/api.php?format=beta&key=${api_key}&imei=${imei}&service=${81}`
     
     // 4. FMI BlackList API request
