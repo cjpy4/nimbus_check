@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -90,6 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Password',
                         labelStyle: Theme.of(context).textTheme.labelLarge,
                       ),
+                      onSubmitted: (value) {
+                           register ? signUp(email, password) : login(email, password);
+                         },
                     ),
                   ),
                   const SizedBox(height: 20),

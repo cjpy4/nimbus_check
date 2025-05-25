@@ -4,6 +4,7 @@ import 'widgets/imei_form_widget.dart';
 import 'widgets/results_list_widget.dart';
 import 'widgets/search_history_widget.dart';
 import 'providers/check_provider.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -28,7 +29,27 @@ class HomePage extends ConsumerWidget {
               (context) => Stack(
                 children: [
                   // Main content - scrollable list of results
-                  const Positioned.fill(child: ResultsListWidget()),
+                  // SizedBox(
+                  //         height: 400,
+                  //         width: 400,
+                  //         child: Column(
+                  //           spacing: 0,
+                  //           children: [
+                  //             Text('Hello World', style: TextStyle(fontSize: 24)),
+                  //             Lottie.asset('assets/stormCloud.json'),
+                  //           ],
+                  //         ),
+                  //       ),
+                  Positioned.fill(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Tech Check',
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                  ),
                   Positioned(
                     width: 64,
                     right: 0,
