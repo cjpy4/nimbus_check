@@ -9,6 +9,7 @@
 - Run with inspector: `bun run --bun wrangler dev --inspector-port=9229` (for debugging)
 
 ### Flutter
+- Run app in dev environmet: `flutter run -d chrome --dart-define=APP_ENV=dev`
 - Run app: `flutter run` or `bun run frontend:dev` (launches on connected device/emulator)
 - Test all: `flutter test` (runs all tests in the test directory)
 - Test single file: `flutter test test/widget_test.dart` (runs specific test file)
