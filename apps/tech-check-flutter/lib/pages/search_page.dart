@@ -5,19 +5,19 @@ import '../widgets/search_history_widget.dart';
 import '../providers/check_provider.dart';
 import '../widgets/logo_widget.dart'; // Import the new Logo widget
 
-class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+class SearchPage extends ConsumerStatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  ConsumerState<SearchPage> createState() => _SearchPageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _SearchPageState extends ConsumerState<SearchPage> {
   bool _isDrawerOpen = false;
 
   void _toggleDrawer() {
     setState(() {
-      _isDrawerOpen = !_isDrawerOpen;
+      _isDrawerOpen = !_isDrawerOpen; 
     });
   }
 
@@ -36,6 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   IMEIFormWidget(
                     onSubmit: (imei, serviceType) {
                       ref.read(checkProvider(imei, serviceType));
+                      Navigator.pushNamed(context, '/results');
                     },
                   ),
                 ],

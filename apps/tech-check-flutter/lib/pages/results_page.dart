@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'result_table_widget.dart';
+import '../widgets/result_table_widget.dart';
 import '../repositories/search_repository.dart';
 
-class ResultsListWidget extends ConsumerWidget {
-  const ResultsListWidget({super.key});
+class ResultsPage extends ConsumerWidget {
+  const ResultsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +28,7 @@ class ResultsListWidget extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(
                       context,
-                    ).colorScheme.onBackground.withOpacity(0.7),
+                    ).colorScheme.onSurface.withOpacity(0.7),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -37,7 +37,7 @@ class ResultsListWidget extends ConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(
                       context,
-                    ).colorScheme.onBackground.withOpacity(0.5),
+                    ).colorScheme.onSurface.withOpacity(0.5),
                   ),
                 ),
               ],

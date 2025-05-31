@@ -1,4 +1,4 @@
-import '../models/serviceTypes.dart';
+import '../models/service_types.dart';
 import '../repositories/search_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/check_repository.dart';

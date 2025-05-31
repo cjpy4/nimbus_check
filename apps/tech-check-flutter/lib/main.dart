@@ -1,12 +1,13 @@
-import 'package:device_check/pages/home_page.dart';
-import 'package:device_check/pages/login.dart';
+import 'package:device_check/pages/search_page.dart';
+import 'package:device_check/pages/login_page.dart';
+import 'package:device_check/pages/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'utils/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:device_check/util.dart';
+import 'package:device_check/utils/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'theme.dart';
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SCW Tech Check',
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      home: const MyHomePage(title: 'SCW Tech-Check'),
+      home: const MyHomePage(title: 'Nimbus Check'),
+      routes: {
+        '/results': (context) => ResultsPage(),
+        '/search': (context) => SearchPage(),
+      },
     );
   }
 }
@@ -59,7 +64,7 @@ class MyHomePage extends ConsumerWidget {
         error: (error, stackTrace) => Center(
           child: Text('Error: ${error.toString()}'),
         ),
-        data: (user) => user != null ? const HomePage() : const LoginScreen(),
+        data: (user) => user != null ? const SearchPage() : const LoginScreen(),
       ),
       floatingActionButton: authState.maybeWhen(
         data: (user) => user != null

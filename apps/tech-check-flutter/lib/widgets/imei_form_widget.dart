@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import '../models/serviceTypes.dart';
+import '../models/service_types.dart';
 
 class IMEIFormWidget extends StatefulWidget {
   final Function(String, ServiceType) onSubmit;
