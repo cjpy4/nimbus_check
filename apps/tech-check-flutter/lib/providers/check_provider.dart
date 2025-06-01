@@ -7,12 +7,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'check_provider.g.dart';
 
 @riverpod
-Future<Map<String, dynamic>> check(Ref ref, String imei, ServiceType service) async {
-  
+Future<Map<String, dynamic>> check(
+  Ref ref,
+  String imei,
+  ServiceType service,
+) async {
   if (imei.isEmpty) {
-         return {};
-       }
-       
+    return {};
+  }
+
   final repository = ref.read(checkRepositoryProvider);
   final searchRepository = ref.read(searchRepositoryProvider);
   final results = await repository.getResults(imei: imei, service: service);

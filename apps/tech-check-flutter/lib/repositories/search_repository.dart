@@ -11,27 +11,24 @@ class SearchRepository {
   final FirebaseAuth _auth;
   SearchRepository(this._firestore, this._auth);
 
-  Future<void> addRecord(Map<String, dynamic> doc) async {
+  Future<String> addRecord(Map<String, dynamic> doc) async {
     final user = _auth.currentUser;
 
     if (user == null) {
       print("User not logged in");
-      return; // Or handle appropriately
+      return 'User not logged in'; // Or handle appropriately
     }
 
     doc.addEntries([MapEntry('createdAt', FieldValue.serverTimestamp())]);
     doc.addEntries([MapEntry('userId', user.uid)]);
 
     try {
-      await _firestore
-          .collection('searches')
-          .add(doc)
-          .then(
-            (documentSnapshot) =>
-                print("Added Data with ID: ${documentSnapshot.id}"),
-          );
+      final documentSnapshot = await _firestore.collection('searches').add(doc);
+      print("Added Data with ID: ${documentSnapshot.id}");
+      return documentSnapshot.id;
     } catch (e) {
       print("Error adding record: $e");
+      return e.toString();
     }
   }
 
@@ -45,6 +42,19 @@ class SearchRepository {
         .collection('searches')
         .where('userId', isEqualTo: user.uid)
         .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getCurrentSearch(docId) {
+    final user = _auth.currentUser;
+    if (user == null) {
+      // Return an empty stream or handle as appropriate
+      return Stream.empty();
+    }
+    return _firestore
+        .collection('searches')
+        .where('userId', isEqualTo: user.uid)
+        .where('id', isEqualTo: docId)
         .snapshots();
   }
 }

@@ -192,7 +192,7 @@ class SearchHistoryWidget extends ConsumerWidget {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           right: isOpen ? 280 : 0, // Position relative to drawer state
-          top: MediaQuery.of(context).padding.top + 200,
+          top: MediaQuery.sizeOf(context).height * 0.5 - 34,
           child: Container(
             width: 48,
             height: 48,

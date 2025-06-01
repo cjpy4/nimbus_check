@@ -14,6 +14,8 @@ class SearchPage extends ConsumerStatefulWidget {
 
 class _SearchPageState extends ConsumerState<SearchPage> {
   bool _isDrawerOpen = false;
+  bool _searchRunning = false;
+  bool showSearchHistory = false;
 
   void _toggleDrawer() {
     setState(() {
@@ -36,7 +38,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   IMEIFormWidget(
                     onSubmit: (imei, serviceType) {
                       ref.read(checkProvider(imei, serviceType));
-                      Navigator.pushNamed(context, '/results');
+                      setState(() {
+                        _searchRunning = true;
+                      });
                     },
                   ),
                 ],
