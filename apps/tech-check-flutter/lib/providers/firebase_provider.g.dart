@@ -6,7 +6,7 @@ part of 'firebase_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseAuthHash() => r'7791bf70ce0f01bf991a53a76abc915478673c0b';
+String _$firebaseAuthHash() => r'912368c3df3f72e4295bf7a8cda93b9c5749d923';
 
 /// See also [firebaseAuth].
 @ProviderFor(firebaseAuth)
@@ -22,7 +22,7 @@ final firebaseAuthProvider = AutoDisposeProvider<FirebaseAuth>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseAuthRef = AutoDisposeProviderRef<FirebaseAuth>;
-String _$authStateChangesHash() => r'f704c8306a15a46ffd6b5737047b52980e2e5546';
+String _$authStateChangesHash() => r'e24076edafd293b2ce4e0f525281e73e4d38b8f4';
 
 /// See also [authStateChanges].
 @ProviderFor(authStateChanges)
@@ -40,7 +40,7 @@ final authStateChangesProvider = AutoDisposeStreamProvider<User?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AuthStateChangesRef = AutoDisposeStreamProviderRef<User?>;
-String _$fireStoreHash() => r'72d5fa069ac2bd7a26e97668c182f56a20e36482';
+String _$fireStoreHash() => r'bdf6789f5323591667b9f4359a3ce9d800b1e8fa';
 
 /// See also [fireStore].
 @ProviderFor(fireStore)

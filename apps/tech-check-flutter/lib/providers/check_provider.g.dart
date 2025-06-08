@@ -6,7 +6,7 @@ part of 'check_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checkHash() => r'30cfbbbb02cbf2f824f9576b3711d271808dfac2';
+String _$checkHash() => r'1881f14f18cf5b0b63a613dba9e4596985169d19';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const checkProvider = CheckFamily();
 
 /// See also [check].
-class CheckFamily extends Family<AsyncValue<Map<String, dynamic>>> {
+class CheckFamily extends Family<AsyncValue<String>> {
   /// See also [check].
   const CheckFamily();
 
@@ -64,7 +64,7 @@ class CheckFamily extends Family<AsyncValue<Map<String, dynamic>>> {
 }
 
 /// See also [check].
-class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
+class CheckProvider extends AutoDisposeFutureProvider<String> {
   /// See also [check].
   CheckProvider(String imei, ServiceType service)
     : this._internal(
@@ -94,9 +94,7 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
   final ServiceType service;
 
   @override
-  Override overrideWith(
-    FutureOr<Map<String, dynamic>> Function(CheckRef provider) create,
-  ) {
+  Override overrideWith(FutureOr<String> Function(CheckRef provider) create) {
     return ProviderOverride(
       origin: this,
       override: CheckProvider._internal(
@@ -113,7 +111,7 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
+  AutoDisposeFutureProviderElement<String> createElement() {
     return _CheckProviderElement(this);
   }
 
@@ -136,7 +134,7 @@ class CheckProvider extends AutoDisposeFutureProvider<Map<String, dynamic>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CheckRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
+mixin CheckRef on AutoDisposeFutureProviderRef<String> {
   /// The parameter `imei` of this provider.
   String get imei;
 
@@ -144,8 +142,7 @@ mixin CheckRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
   ServiceType get service;
 }
 
-class _CheckProviderElement
-    extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
+class _CheckProviderElement extends AutoDisposeFutureProviderElement<String>
     with CheckRef {
   _CheckProviderElement(super.provider);
 

@@ -1,11 +1,11 @@
-import 'package:device_check/pages/search_page.dart';
-import 'package:device_check/pages/login_page.dart';
-import 'package:device_check/pages/results_page.dart';
+import 'package:nimbus_check/pages/search_page.dart';
+import 'package:nimbus_check/pages/login_page.dart';
+import 'package:nimbus_check/pages/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'utils/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:device_check/utils/util.dart';
+import 'package:nimbus_check/utils/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'utils/theme.dart';
 

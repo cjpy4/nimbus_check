@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/repositories/search_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/service_types.dart';
+import 'package:nimbus_check/providers/search_providers.dart';
+import 'package:nimbus_check/models/service_types.dart';
 
 class SearchHistoryWidget extends ConsumerWidget {
   final bool isOpen;

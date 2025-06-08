@@ -1,4 +1,4 @@
-import 'package:device_check/models/service_types.dart';
+import 'package:nimbus_check/models/service_types.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:http/http.dart' as http;

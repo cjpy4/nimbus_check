@@ -1,0 +1,1 @@
+enum RenderedView { home, singleResult, resultList }

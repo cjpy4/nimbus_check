@@ -7,13 +7,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'check_provider.g.dart';
 
 @riverpod
-Future<Map<String, dynamic>> check(
-  Ref ref,
-  String imei,
-  ServiceType service,
-) async {
+Future<String> check(Ref ref, String imei, ServiceType service) async {
   if (imei.isEmpty) {
-    return {};
+    return '';
   }
 
   final repository = ref.read(checkRepositoryProvider);
@@ -22,9 +18,13 @@ Future<Map<String, dynamic>> check(
 
   print("Results: $results");
 
+  final String docId;
   if (results.isNotEmpty) {
-    await searchRepository.addRecord(results);
+    docId = await searchRepository.addRecord(results);
+  } else {
+    // TODO: Handle missing docId
+    docId = '';
   }
 
-  return results;
+  return docId;
 }

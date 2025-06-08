@@ -59,6 +59,7 @@ class SearchRepository {
   }
 }
 
+// Provider for the SearchRepository
 @riverpod
 SearchRepository searchRepository(Ref ref) {
   // Get Firestore instance
@@ -67,15 +68,3 @@ SearchRepository searchRepository(Ref ref) {
   return SearchRepository(firestore, auth);
 }
 
-// Create a provider that exposes the stream of results
-@riverpod
-Stream<List<Map<String, dynamic>>> searchHistory(Ref ref) {
-  final repository = ref.watch(searchRepositoryProvider);
-  return repository.getSearches().map((querySnapshot) {
-    final documents = querySnapshot.docs;
-
-    final searches =
-        documents.map((doc) => doc.data()).toList(); // Non-null list of Strings
-    return searches;
-  });
-}

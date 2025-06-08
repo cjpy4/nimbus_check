@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/result_table_widget.dart';
-import '../repositories/search_repository.dart';
+import 'package:nimbus_check/widgets/result_table_widget.dart';
+import 'package:nimbus_check/providers/search_providers.dart';
+import 'package:nimbus_check/widgets/logo_widget.dart';
+
 
 class ResultsPage extends ConsumerWidget {
   const ResultsPage({super.key});
@@ -14,34 +16,7 @@ class ResultsPage extends ConsumerWidget {
       child: searchHistory.when(
         data: (data) {
           if (data.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.search_outlined,
-                  size: 80,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No searches yet',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Enter an IMEI to view device information',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withOpacity(0.5),
-                  ),
-                ),
-              ],
-            );
+            return Logo();
           }
           return ListView.builder(
             itemCount: data.length,
