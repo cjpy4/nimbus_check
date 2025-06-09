@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
-      title: 'SCW Tech Check',
+      title: 'Nimbus Check',
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       home: MyHomePage(title: 'Nimbus Check'),
       routes: {
@@ -148,10 +148,8 @@ class MyHomePage extends ConsumerWidget {
           data:
               (user) => user != null ? const SearchPage() : const LoginScreen(),
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: Theme.of(context).scaffoldBackgroundColor, 
-          child: Row(
-            children: [
+        appBar: AppBar(
+            leading:
               IconButton(
                 onPressed: _handleMenuButtonPressed,
                 icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -171,8 +169,6 @@ class MyHomePage extends ConsumerWidget {
                   },
                 ),
               ),
-            ],
-          ),
         ),
         floatingActionButton: authState.maybeWhen(
           data:
