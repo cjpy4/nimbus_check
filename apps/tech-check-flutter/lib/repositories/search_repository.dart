@@ -45,17 +45,13 @@ class SearchRepository {
         .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getCurrentSearch(docId) {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getCurrentSearch(docId) {
     final user = _auth.currentUser;
     if (user == null) {
       // Return an empty stream or handle as appropriate
       return Stream.empty();
     }
-    return _firestore
-        .collection('searches')
-        .where('userId', isEqualTo: user.uid)
-        .where('id', isEqualTo: docId)
-        .snapshots();
+    return _firestore.collection('searches').doc(docId).snapshots();
   }
 }
 

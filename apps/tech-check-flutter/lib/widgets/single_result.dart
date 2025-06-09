@@ -10,10 +10,13 @@ class SingleResult extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final result = ref.watch(currentSearchProvider(docId));
-    return Center(child: result.when(
-      data: (data) => ResultTableWidget(results: data),
-      error: (error, stackTrace) => Text('Error stuffs: $error'),
-      loading: () => CircularProgressIndicator(),
-    ));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Center(child: result.when(
+        data: (data) => ResultTableWidget(results: data),
+        error: (error, stackTrace) => Text('Error stuffs: $error'),
+        loading: () => CircularProgressIndicator(),
+      )),
+    );
   }
 }

@@ -1,1 +1,1 @@
-enum RenderedView { home, singleResult, resultList }
+enum RenderedView { home, loading, singleResult, resultList }

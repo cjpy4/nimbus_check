@@ -20,8 +20,7 @@ class Logo extends StatelessWidget {
               width: 150,
               height: 150,
               child: Lottie.asset(
-                'assets/blueRainCloudAnimation.json',
-
+                'assets/lightningLoad.json',
               ),
             ),
           ],

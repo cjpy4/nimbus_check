@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nimbus_check/providers/search_providers.dart';
 import 'package:nimbus_check/models/service_types.dart';
+import 'package:nimbus_check/widgets/copy_button.dart';
 
 class SearchHistoryWidget extends ConsumerWidget {
   final bool isOpen;
@@ -53,16 +54,19 @@ class SearchHistoryWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchHistory = ref.watch(searchHistoryProvider);
 
+    // Increase drawer width from 280 to 350 pixels
+    const double drawerWidth = 450;
+
     return Stack(
       children: [
         // Main drawer content
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          right: isOpen ? 0 : -280, // Slide in/out from right
+          right: isOpen ? 0 : -drawerWidth, // Use the new width variable
           top: 0,
           bottom: 0,
-          width: 280,
+          width: drawerWidth, // Use the new width variable
           child: Material(
             elevation: 16,
             child: Column(
@@ -80,6 +84,13 @@ class SearchHistoryWidget extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // IconButton to close the drawer
+                      IconButton(
+                        onPressed: () {
+                          onToggle();
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
                       Text(
                         'Recent Searches',
                         style:
@@ -87,12 +98,8 @@ class SearchHistoryWidget extends ConsumerWidget {
                               context,
                             ).textTheme.titleLarge, // Use theme text style
                       ),
-                      IconButton(
-                        onPressed: () {
-                          // ref.read(searchHistoryProvider.notifier).clearHistory();
-                        },
-                        icon: const Icon(Icons.delete_outline),
-                      ),
+                      // Empty space to balance the row
+                      const SizedBox(width: 48), // Fixed width for balance
                     ],
                   ),
                 ),
@@ -108,23 +115,25 @@ class SearchHistoryWidget extends ConsumerWidget {
                     child: searchHistory.when(
                       data: (searches) {
                         if (searches.isEmpty) {
-                          return const Center(child: Text('No checks yet.'));
+                          return const Center(child: Text('No searches yet.'));
                         }
 
                         return ListView.builder(
                           // Use ListView.builder for vertical list
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 32.0),
                           itemCount: searches.length,
                           itemBuilder: (context, index) {
                             final search = searches[index];
+                            final String searchNumber = search['IMEI'] ?? search['imei'];
+
                             return Card(
                               elevation: 2.0,
                               margin: const EdgeInsets.symmetric(vertical: 4.0),
                               child: InkWell(
                                 onTap: () {
-                                  // Get the IMEI from the search history
-                                  final searchNumber = search['IMEI'] ?? search['imei'];
                                   
+                                  // TODO: Add ServiceType to Card undneath the searchNumber
+
                                   // Determine service type - default to iPhone if not available
                                   ServiceType serviceType = ServiceType.iPhone;
                                   if (search['serviceType'] != null) {
@@ -152,7 +161,9 @@ class SearchHistoryWidget extends ConsumerWidget {
                                   padding: const EdgeInsets.all(12.0),
                                   child: Row(
                                     children: [
-                                      // IMEI number
+                                      // Copy Button
+                                      CopyButton(searchNum: searchNumber ),
+                                      // Search number with bold text
                                       Expanded(
                                         child: Text(
                                           search['IMEI'] ?? search['imei'],
@@ -191,7 +202,7 @@ class SearchHistoryWidget extends ConsumerWidget {
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          right: isOpen ? 280 : 0, // Position relative to drawer state
+          right: isOpen ? drawerWidth : 0, // Use the new width variable
           top: MediaQuery.sizeOf(context).height * 0.5 - 34,
           child: Container(
             width: 48,

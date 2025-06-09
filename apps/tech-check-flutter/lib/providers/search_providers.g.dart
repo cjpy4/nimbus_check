@@ -26,7 +26,7 @@ final searchHistoryProvider =
 // ignore: unused_element
 typedef SearchHistoryRef =
     AutoDisposeStreamProviderRef<List<Map<String, dynamic>>>;
-String _$currentSearchHash() => r'08a7d63265d4fb77c772c7eef6d939980386c917';
+String _$currentSearchHash() => r'83cc1310cf08c3dc0c5f941efbe5733bef44a1ca';
 
 /// Copied from Dart SDK
 class _SystemHash {

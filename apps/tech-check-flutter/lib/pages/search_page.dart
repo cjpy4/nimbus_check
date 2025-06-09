@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nimbus_check/widgets/imei_form_widget.dart';
 import 'package:nimbus_check/widgets/search_history_widget.dart';
@@ -8,6 +7,7 @@ import 'package:nimbus_check/widgets/logo_widget.dart';
 import 'package:nimbus_check/widgets/single_result.dart';
 import 'package:nimbus_check/pages/results_page.dart';
 import 'package:nimbus_check/models/view_options.dart';
+import 'package:nimbus_check/widgets/loading_indicator.dart';
 
 class SearchPage extends ConsumerStatefulWidget {
   const SearchPage({super.key});
@@ -18,8 +18,9 @@ class SearchPage extends ConsumerStatefulWidget {
 
 class _SearchPageState extends ConsumerState<SearchPage> {
   bool _isDrawerOpen = false;
-  RenderedView currentView = RenderedView.singleResult;
-  String docId = 'H5EaCNnRYofM0dpOUVZ0';
+  RenderedView currentView = RenderedView.home; // Default view is home
+  late String docId;
+  bool _isLoading = false;
 
   void _toggleDrawer() {
     setState(() {
@@ -40,17 +41,22 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 children: [
                   switch (currentView) {
                     RenderedView.home => Logo(),
+                    RenderedView.loading => const CloudLoadingIndicator(),
                     RenderedView.singleResult => SingleResult(docId: docId),
                     RenderedView.resultList => ResultsPage(),
                   },
                   IMEIFormWidget(
                     onSubmit: (imei, serviceType) async {
+                      setState(() {
+                        currentView = RenderedView.loading;
+                      });
                       try {
-                        // If the provider returns a Future
-                        final result = await ref.read(checkProvider(imei, serviceType).future);
+                        final result = await ref.read(
+                          checkProvider(imei, serviceType).future,
+                        );
                         setState(() {
                           docId = result;
-                          currentView = RenderedView.singleResult; // Update view based on result
+                          currentView = RenderedView.singleResult;
                         });
                       } catch (error) {
                         // Handle error

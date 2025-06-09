@@ -19,11 +19,11 @@ Stream<List<Map<String, dynamic>>> searchHistory(Ref ref) {
 @riverpod
 Stream<Map<String, dynamic>> currentSearch(Ref ref, docId) {
   final repository = ref.watch(searchRepositoryProvider);
-  return repository.getCurrentSearch(docId).map((querySnapshot) {
-    final documents = querySnapshot.docs;
-
-    final lastSearch =
-        documents.map((doc) => doc.data()).toList().first;
-    return lastSearch;
+  return repository.getCurrentSearch(docId).map((documentSnapshot) {
+    final document = documentSnapshot.data();
+    if (document == null) {
+      return {}; // Return an empty map if no document found
+    }
+    return document;
   });
 }
