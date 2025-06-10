@@ -1,4 +1,5 @@
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:nimbus_check/pages/profile_page.dart';
 import 'package:nimbus_check/pages/search_page.dart';
 import 'package:nimbus_check/pages/login_page.dart';
 import 'package:nimbus_check/pages/results_page.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/results': (context) => ResultsPage(),
         '/search': (context) => SearchPage(),
+        '/profile': (context) => ProfilePage(),
       },
     );
   }
@@ -112,7 +114,9 @@ class MyHomePage extends ConsumerWidget {
                   title: Text('Home'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
                   leading: Icon(Icons.account_circle_rounded),
                   title: Text('Profile'),
                 ),
