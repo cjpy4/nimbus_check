@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nimbus_check/widgets/imei_form_widget.dart';
+import 'package:nimbus_check/widgets/navigation_rail.dart';
 import 'package:nimbus_check/widgets/search_history_widget.dart';
 import 'package:nimbus_check/providers/check_provider.dart';
 import 'package:nimbus_check/widgets/logo_widget.dart';
@@ -20,7 +21,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   bool _isDrawerOpen = false;
   RenderedView currentView = RenderedView.home; // Default view is home
   late String docId;
-  bool _isLoading = false;
+  int _selectedIndex = 0;
 
   void _toggleDrawer() {
     setState(() {
@@ -33,8 +34,13 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Main content centered
-          Positioned.fill(
+          Positioned(left: 0, top: 0, bottom: 0, child: NavRail()),
+          // Main content
+          Positioned(
+            left: 72, // NavigationRail default width
+            right: 0,
+            top: 0,
+            bottom: 0,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
